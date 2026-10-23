@@ -1,0 +1,26 @@
+services:
+  model-server:
+    environment:
+      TARGET_DEVICE: NPU
+    command:
+      - --source_model
+      - ${MODEL_ID:-OpenVINO/Qwen3.5-9B-int8-ov}
+      - --task
+      - text_generation
+      - --model_repository_path
+      - /models
+      - --tool_parser
+      - hermes3
+      - --reasoning_parser
+      - qwen3
+      - --cache_size
+      - "2"
+      - --target_device
+      - NPU
+      - --rest_port
+      - "8000"
+    devices:
+      - /dev/accel:/dev/accel
+      - /dev/dri:/dev/dri
+    group_add:
+      - ${RENDER_GROUP_ID:-0}
